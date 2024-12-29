@@ -1,7 +1,6 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
-import { CloudinaryModule } from './cloudinary/cloudinary.module';
 import { ConfigModule } from '@nestjs/config';
 import config, { validateEnv } from './config';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
@@ -16,7 +15,6 @@ import { HttpResponseInterceptor } from './common/http-response/http-response.in
       load: [config],
       validate: validateEnv,
     }),
-    CloudinaryModule,
   ],
   controllers: [AppController],
   providers: [

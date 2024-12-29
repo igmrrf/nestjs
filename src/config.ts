@@ -1,31 +1,16 @@
-import { IsNotEmpty, IsString, validateSync } from 'class-validator';
+import { IsNotEmpty, IsNumber, IsString, validateSync } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
 
 export default () => ({
-  cloudinary: {
-    cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
-    api_key: process.env.CLOUDINARY_API_KEY,
-    api_secret: process.env.CLOUDINARY_API_SECRET,
-    preset: process.env.CLOUDINARY_PRESET,
+  app: {
+    port: process.env.PORT,
   },
 });
 
 class ConfigValidation {
   @IsNotEmpty()
-  @IsString()
-  CLOUDINARY_CLOUD_NAME: string;
-
-  @IsNotEmpty()
-  @IsString()
-  CLOUDINARY_API_KEY: string;
-
-  @IsNotEmpty()
-  @IsString()
-  CLOUDINARY_API_SECRET: string;
-
-  @IsNotEmpty()
-  @IsString()
-  CLOUDINARY_PRESET: string;
+  @IsNumber()
+  PORT: string;
 }
 
 export function validateEnv(config: Record<string, any>): Record<string, any> {
