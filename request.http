@@ -1,0 +1,37 @@
+# Get home
+GET http://localhost:4030
+
+
+
+### Create Owner
+GET http://localhost:4030/owners/6840c53f586b117afd5fc27f
+
+### Create Owner
+POST http://localhost:4030/owners
+Content-Type: application/json
+
+{
+  "name": "Francis"
+}
+
+
+### Create Cat
+POST http://localhost:4030/cats
+Content-Type: application/json
+
+{
+  "name":"Nezuko",
+  "age": 3,
+  "breed":"Birman",
+  "tags": ["sweet", "calm", "boring" ],
+  "owner": "6840c53f586b117afd5fc27f",
+  "fans": ["6840c53f586b117afd5fc27f"]
+}
+
+### Create Cat
+GET http://localhost:4030/cats/6840c8383eba9e9ea165bd18
+
+### Get Cat Fans Cat Breeds
+GET http://localhost:4030/cats/fans-breed/6840c9cd997194fdce8f7766
+
+

@@ -1,4 +1,4 @@
-import { IsNotEmpty, IsNumber, IsString, validateSync } from 'class-validator';
+import { IsNumber, validateSync } from 'class-validator';
 import { plainToInstance } from 'class-transformer';
 
 export default () => ({
@@ -8,9 +8,8 @@ export default () => ({
 });
 
 class ConfigValidation {
-  @IsNotEmpty()
   @IsNumber()
-  PORT: string;
+  PORT: number;
 }
 
 export function validateEnv(config: Record<string, any>): Record<string, any> {

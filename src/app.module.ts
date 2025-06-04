@@ -4,8 +4,11 @@ import { AppService } from './app.service';
 import { ConfigModule } from '@nestjs/config';
 import config, { validateEnv } from './config';
 import { APP_FILTER, APP_INTERCEPTOR } from '@nestjs/core';
-import { AllExceptionFilter } from './common/http-exception/http-exception.filter';
-import { HttpResponseInterceptor } from './common/http-response/http-response.interceptor';
+import { AllExceptionFilter } from './common/filters/http-exception/http-exception.filter';
+import { HttpResponseInterceptor } from './common/interceptors/http-response/http-response.interceptor';
+import { CatsModule } from './domains/cats/cats.module';
+import { MongooseModule } from '@nestjs/mongoose';
+import { OwnersModule } from './domains/owners/owners.module';
 
 @Module({
   imports: [
@@ -15,6 +18,11 @@ import { HttpResponseInterceptor } from './common/http-response/http-response.in
       load: [config],
       validate: validateEnv,
     }),
+    MongooseModule.forRoot('mongodb://localhost:27017/nest', {
+      autoIndex: false,
+    }),
+    CatsModule,
+    OwnersModule,
   ],
   controllers: [AppController],
   providers: [

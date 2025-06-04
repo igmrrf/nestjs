@@ -4,11 +4,13 @@ import {
   ExceptionFilter,
   HttpException,
   HttpStatus,
+  Logger,
 } from '@nestjs/common';
 import { HttpAdapterHost } from '@nestjs/core';
 
 @Catch()
 export class AllExceptionFilter implements ExceptionFilter {
+  private readonly logger = new Logger(AllExceptionFilter.name);
   constructor(private readonly httpAdapterHost: HttpAdapterHost) {}
 
   catch(exception: unknown, host: ArgumentsHost): void {
@@ -23,9 +25,13 @@ export class AllExceptionFilter implements ExceptionFilter {
       ? exception.message
       : 'internal server error, please try again later.';
 
-    const except = instanceOfHttpException && exception.getResponse();
-    if (typeof except === 'object' && 'message' in except) {
-      const exceptionMessage = except.message;
+    if (
+      typeof exception === 'object' &&
+      'message' in exception &&
+      typeof exception.message === 'string'
+    ) {
+      const exceptionMessage = exception.message;
+      message = exceptionMessage;
       if (
         message === 'Bad Request Exception' &&
         typeof exceptionMessage !== 'string'
@@ -43,6 +49,7 @@ export class AllExceptionFilter implements ExceptionFilter {
       links: [],
       path: httpAdapter.getRequestUrl(ctx.getRequest()),
     };
+    this.logger.log(responseBody);
 
     httpAdapter.reply(ctx.getResponse(), responseBody, httpStatus);
   }
