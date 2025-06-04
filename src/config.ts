@@ -10,7 +10,7 @@ export default () => ({
 class ConfigValidation {
   @IsNotEmpty()
   @IsNumber()
-  PORT: string;
+  PORT: number;
 }
 
 export function validateEnv(config: Record<string, any>): Record<string, any> {
