@@ -1,4 +1,6 @@
-import { Prop, Schema, SchemaFactory, raw } from '@nestjs/mongoose';
+import { Prop, Schema, SchemaFactory, Virtual, raw } from '@nestjs/mongoose';
+import { Personality, PersonalitySchema } from './personality.schema';
+import { HydratedDocument, Types } from 'mongoose';
 
 @Schema()
 export class Owner {
@@ -18,6 +20,25 @@ export class Owner {
     }),
   )
   address: Record<string, string | number | boolean>;
+
+  @Prop({ PersonalitySchema })
+  personality: Personality;
+
+  @Virtual({
+    get: function (this: Owner) {
+      return `${this.name}-${this.email.substring(0, 3)}`;
+    },
+  })
+  username: string;
 }
 
 export const OwnerSchema = SchemaFactory.createForClass(Owner);
+
+export type OwnerDocumentOverride = {
+  name: string;
+  email: string;
+  address: Record<string, string | number | boolean>;
+  personality: Types.Subdocument<Types.ObjectId> & Personality;
+};
+
+export type OwnerDocument = HydratedDocument<Owner, OwnerDocumentOverride>;

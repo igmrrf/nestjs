@@ -1,4 +1,4 @@
-import { Module } from '@nestjs/common';
+import { Logger, Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
@@ -26,21 +26,22 @@ const plants_uri = 'mongodb://localhost:27017/plants';
     }),
     MongooseModule.forRootAsync({
       useFactory: (configService: ConfigService) => {
+        const logger = new Logger(databases.animals);
         const uri = configService.get<string>('ANIMAL_MONGO_DB_URL');
         return {
           uri,
           onConnectionCreate: (connection: Connection) => {
             const name = databases.animals;
-            connection.on('connected', () => console.log('%s connected', name));
-            connection.on('open', () => console.log('%s open', name));
+            connection.on('connected', () => logger.log('%s connected', name));
+            connection.on('open', () => logger.log('%s open', name));
             connection.on('disconnected', () =>
-              console.log('%s disconnected', name),
+              logger.log('%s disconnected', name),
             );
             connection.on('reconnected', () =>
-              console.log('%s reconnected', name),
+              logger.log('%s reconnected', name),
             );
             connection.on('disconnecting', () =>
-              console.log('%s disconnecting', name),
+              logger.log('%s disconnecting', name),
             );
             return connection;
           },
@@ -59,14 +60,15 @@ const plants_uri = 'mongodb://localhost:27017/plants';
     MongooseModule.forRoot(plants_uri, {
       onConnectionCreate: (connection: Connection) => {
         const name = databases.plants;
-        connection.on('connected', () => console.log('%s connected', name));
-        connection.on('open', () => console.log('%s open', name));
+        const logger = new Logger(databases.plants);
+        connection.on('connected', () => logger.log('%s connected', name));
+        connection.on('open', () => logger.log('%s open', name));
         connection.on('disconnected', () =>
-          console.log('%s disconnected', name),
+          logger.log('%s disconnected', name),
         );
-        connection.on('reconnected', () => console.log('%s reconnected', name));
+        connection.on('reconnected', () => logger.log('%s reconnected', name));
         connection.on('disconnecting', () =>
-          console.log('%s disconnecting', name),
+          logger.log('%s disconnecting', name),
         );
         return connection;
       },
