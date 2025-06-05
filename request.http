@@ -35,3 +35,6 @@ GET http://localhost:4030/cats/6840c8383eba9e9ea165bd18
 GET http://localhost:4030/cats/fans-breed/6840c9cd997194fdce8f7766
 
 
+### Get Cat
+GET http://localhost:4030/cats/6840c9cd997194fdce8f7766
+

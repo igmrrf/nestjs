@@ -4,13 +4,14 @@ import { UpdateOwnerDto } from './dto/update-owner.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Owner } from './entities/owner.schema';
 import { Model } from 'mongoose';
-import { collections } from 'src/common/constants/db.constants';
+import { collections, databases } from 'src/common/constants/db.constants';
 
 @Injectable()
 export class OwnersService {
   private readonly logger = new Logger(OwnersService.name);
   constructor(
-    @InjectModel(Owner.name) private readonly ownerModel: Model<Owner>,
+    @InjectModel(Owner.name, databases.animals)
+    private readonly ownerModel: Model<Owner>,
   ) {}
 
   async create(createOwnerDto: CreateOwnerDto) {
